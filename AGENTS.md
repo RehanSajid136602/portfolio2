@@ -1,118 +1,106 @@
-AGENTS.md
+# AGENTS.md - Portfolio Project
 
-Overview
-- This file provides centralized guidance for agentic coding tasks within this repository. It covers build, lint, test workflows, code style conventions, error handling, and naming. It also documents any repository-specific Cursor/Copilot rules and the expected approval/workflow patterns.
+## Overview
+This document provides guidance for agentic coding tasks in this Next.js 16 portfolio project. It covers build, lint, test workflows, code style conventions, and project-specific patterns.
 
-**Table of contents**
-- Build, Lint, Test
-- Code Style Guidelines
-- Cursor Rules
-- Copilot Rules
-- Quality Gates
-- Quick Start for Agents
-- Conventions by Language (summary)
-- Contact and Updates
+## Build, Lint, Test
 
-**Build, Lint, Test**
-- Build commands
-  - Node/JS/TS (if package.json present): `npm run build` or `yarn build` or `pnpm build`.
-  - TypeScript-only projects: `npm run build` should imply `tsc -p tsconfig.json` if not otherwise specified.
-  - Python projects: `python -m build` or `python setup.py build` when configured; otherwise rely on project tooling.
-  - Go projects: `go build ./...`.
-  - Rust: `cargo build`.
-  - Java: `mvn -B -DskipTests package` or `gradle build` depending on project.
-  - C/C++: consult `Makefile`/CMake; typically `make` or `cmake --build`.
-- Lint commands
-  - Node/TS: `npm run lint` or `yarn lint` or `pnpm lint`.
-  - Python: `pytest --maxfail=1 -q` with lints via `flake8`/`ruff` or `pylint` via `rg`-style rules.
-  - Go: `golangci-lint run` if configured; otherwise use `go vet` + `staticcheck`.
-  - Java: `mvn -DskipTests -Dformat.dryRun=true spotless:apply` if using Spotless; otherwise project-specific linters.
-- Tests
-  - Node/JS/TS: `npm test` / `yarn test` / `pnpm test`.
-  - Python: `pytest` with optional `-k <name>` to run a single test.
-  - Go: `go test ./...` with `-run <Regex>` to run a single test.
-  - Rust: `cargo test` with filter for a single test like `cargo test TestName`.
-  - Java: `mvn test -Dtest=TestName` or `gradle test --tests TestName`.
-- Running a single test (practical examples)
-  - Node/Jest: `npm test -- -t "should do something"` or `yarn test -u --testNamePattern="should do something"`.
-  - PyTest: `pytest -k test_name` or `pytest path/to/test_file.py::test_name`.
-  - Go: `go test -run ^TestName$`.
-  - Rust: `cargo test TestName`.
-  - Java: `mvn -Dtest=TestName test` or `gradle test --tests TestName`.
-- Notes
-  - Prefer running a narrow test to confirm behavior changes; avoid long-running suites in quick iterations.
-  - Use environment isolation (nvm/vnvm, virtualenv, or container) when tests depend on external state.
+### Build Commands
+- Development: `npm run dev` (uses Next.js turbo mode)
+- Production build: `npm run build`
+- Start production server: `npm start`
+- Bundle analysis: `npm run analyze`
 
-**Code Style Guidelines**
-- Imports and modules
-  - Import order: Standard library, third-party, local modules. Group and sort alphabetically within each group.
-  - Avoid wildcard imports. Prefer explicit symbols (e.g., import { Foo, Bar } from 'module').
-  - Side-effect imports (if any) should be clearly documented and minimized.
-- Formatting
-  - Enforce a single formatter. For JS/TS: Prettier with a shared config; for Python: Black; for Go: gofmt; for Java: project-specific formatting tool.
-  - Line length: Prefer 80-120 characters; wrap when exceeding 120 where clarity is affected.
-  - Semicolons: Follow language norms; semicolons in JS/TS are standard; in Python/Go, se quit.
-  - Trailing commas: Use trailing commas in multi-line object/array literals where supported to simplify diffs.
-- Types and typing (when applicable)
-  - Use strict typing where possible. Avoid `any` in TypeScript; prefer `unknown` if the exact type is not known at call-site.
-  - Document shapes with interfaces/types for clarity; favor discriminated unions for complex state.
-- Naming conventions
-  - Variables: camelCase; Constants: UPPER_SNAKE_CASE; Types/Classes: PascalCase; Functions: camelCase.
-  - Boolean flags: use is/has/should prefixing.
-- Error handling
-  - Do not swallow errors; propagate with context using error wrappers.
-  - Use meaningful error messages; include function/module names and relevant inputs when possible.
-  - Centralize error types for libraries and API layers.
-- Documentation and comments
-  - Write doc comments for public API: short description, params, return values.
-  - Use inline comments sparingly; prefer self-describing code; comments explain "why" not "what".
-- Testing style
-  - Tests should be fast, deterministic, and isolated.
-  - Use descriptive test names; group related tests with `describe`/`context` blocks.
-  - Mock external dependencies with explicit scaffolding; avoid flaky tests.
-- Security and privacy
-  - Do not commit secrets or credentials; use environment managers and config files ignored by VCS.
-  - Validate inputs and sanitize outputs to prevent injection vulnerabilities.
-- Versioning and releases
-  - Align with semantic versioning: MAJOR.MINOR.PATCH.
-  - Update changelogs/docs when making public API changes.
-- Documentation across repo
-  - README.md and inline docs should reflect current behavior; deprecations are clearly communicated.
-- Accessibility and inclusivity
-  - If UI, ensure semantics (ARIA, alt text) for accessibility.
-- Performance
-  - Prioritize clear, readable code; optimize only after profiling.
+### Lint Commands
+- Run ESLint: `npm run lint`
+- Project uses `eslint-config-next` with TypeScript support
+- Configuration file: `eslint.config.mjs`
 
-**Cursor Rules**
-- Cursor rules location: `.cursor/rules/` or `.cursorrules` at repo root or relevant subdirectories.
-- Rule format: JSON/YAML-like declarations or DSL as defined by the repo tooling.
-- When present, apply rules to code generation, edits, and automated fixes before review.
-- If there are conflicts between Cursor rules and existing lint/test, prefer Cursor rules for code generation steps.
-- If no Cursor rules are detected, note that this repository currently has no explicit Cursor rules; consider adding a minimal policy in this file.
+### Test Commands
+- No test framework configured yet. When adding tests:
+  - Use Jest or Vitest for unit tests
+  - Run tests with: `npm test`
+  - Run single test: `npm test -- --testNamePattern="test name"`
 
-**Copilot Rules**
-- Copilot instructions file: `.github/copilot-instructions.md`.
-- If present, use the guidance to constrain auto-generated code (e.g., prefer explicit code blocks, limit scaffolding, enforce naming conventions).
-- If not present, note absence and suggest establishing a Copilot usage policy to maintain consistency.
+### Type Checking
+- Strict TypeScript mode enabled in `tsconfig.json`
+- Run type check via build: `npm run build` (includes type checking)
+- Path alias: `@/*` maps to `./src/*`
 
-**Quality Gates**
-- All changes should pass lint and tests locally before adding changes to any PR.
-- If a test fails or lint reports errors, fix there or create a minimal, well-scoped follow-up task.
-- Prefer minimal, well-justified changes; avoid broad, sweeping edits.
+## Code Style Guidelines
 
-**Quick Start for Agents**
-- Before editing code, review existing AGENTS.md and repository AGENTS references.
-- Use `glob`, `read`, and `edit` tools for surgical changes only; avoid large rewrites without plan.
-- When in doubt, ask for scope clarification and propose a targeted patch.
+### Imports and Modules
+- Use explicit named imports: `import { Foo, Bar } from 'module'`
+- No wildcard imports
+- Client components must have `"use client"` at the very top
+- Import order: React hooks → external libraries → internal components/utils
 
-**Conventions by Language (summary)**
-- JavaScript/TypeScript: ESLint + Prettier, strict types where used; explicit imports; no implicit any.
-- Python: Black + Flake8 or Ruff; type hints with mypy where possible.
-- Go: gofmt, golangci-lint; explicit error handling; idiomatic error chaining.
-- Rust: Clippy + cargo fmt; explicit Result usage; avoid unwrap in library code.
-- Java: Spotless for formatting; lint checks; unit tests with JUnit.
-- C/C++: clang-format; cppcheck; avoid undefined behavior.
+### Formatting
+- Uses ESLint + Next.js conventions
+- Line length: ~100 characters recommended
+- Use trailing commas in multi-line objects/arrays
+- Use TypeScript strict mode - avoid `any`, prefer `unknown` if needed
+- Always type function parameters and return values
 
-**Updates and Contact**
-- This file is a living document; update with changes to tooling or repo policies.
-- For questions or updates, ping the maintainer or add a PR to discuss.
+### Naming Conventions
+- Components: PascalCase (e.g., `Hero`, `RocketButton`)
+- Functions/variables: camelCase
+- Constants: UPPER_SNAKE_CASE for config values, camelCase for animation variants
+- Types/interfaces: PascalCase with `Props` suffix for component props
+- Boolean variables: `is*`, `has*`, `should*` prefix
+
+### Error Handling
+- Wrap async operations in try/catch
+- Log errors with context: `console.error("Failed to copy:", err)`
+- Handle clipboard and API errors gracefully with user feedback
+- Reset state to idle on error (see `RocketButton.tsx:58`)
+
+### Component Patterns
+- Memoize components with `React.memo()` for performance
+- Use `framer-motion` for animations with variants for complex sequences
+- Extract animation variants to module-level constants (see `Hero.tsx:8-15`)
+- Use Tailwind utility classes for styling
+- Extract complex JSX patterns into separate components when reused
+- Use `clsx` and `tailwind-merge` for conditional class handling
+
+### File Organization
+- Components: `src/components/[category]/[Name].tsx`
+- Categories: `ui/`, `sections/`, `effects/`
+- Lib utilities: `src/lib/`
+- App routes: `src/app/`
+
+### Accessibility
+- Use semantic HTML elements
+- Ensure interactive elements have proper states
+- No ARIA attributes currently - add when needed
+
+## Cursor Rules
+No `.cursor/rules/` or `.cursorrules` files present.
+
+## Copilot Rules
+No `.github/copilot-instructions.md` file present.
+
+## Quality Gates
+- All changes must pass `npm run lint` before committing
+- Production builds (`npm run build`) must succeed
+- Avoid large rewrites without prior discussion
+- Use descriptive commit messages
+
+## Quick Start for Agents
+1. Run `npm run dev` to start the development server
+2. Use `npm run lint` to check code quality
+3. The project uses React 19 with Next.js 16 App Router
+4. All components are TypeScript with strict mode
+5. Tailwind CSS v4 with PostCSS for styling
+
+## Technology Stack
+- Next.js 16.1.1 with App Router
+- React 19.2.3
+- TypeScript 5
+- Tailwind CSS 4
+- Framer Motion 12
+- ESLint 9
+- Lucide React icons
+
+## Contact
+For questions, review `GEMINI.md` for project-specific context and decisions.

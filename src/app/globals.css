@@ -15,6 +15,7 @@
   --color-primary: var(--primary);
   --color-secondary: var(--secondary);
   --color-accent: var(--accent);
+  --font-mono: var(--font-geist-mono);
 }
 
 html {

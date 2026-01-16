@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { CloudSun, Coins, Languages, Mail, Utensils, ExternalLink, Cpu, Sparkles } from "lucide-react";
+import { CloudSun, Coins, Languages, Mail, Utensils, ExternalLink, Cpu, Sparkles, Calendar } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 
@@ -13,8 +13,6 @@ const projects = [
     icon: <CloudSun className="text-blue-400" size={24} />,
     color: "bg-blue-500/10 border-blue-400/40 shadow-blue-500/20",
     link: "https://aether-weather-v2.vercel.app/",
-    orbit: 240,
-    speed: 35,
   },
   {
     id: 2,
@@ -23,8 +21,6 @@ const projects = [
     icon: <Coins className="text-emerald-400" size={24} />,
     color: "bg-emerald-500/10 border-emerald-400/40 shadow-emerald-500/20",
     link: "https://neoexchange-v2.vercel.app/",
-    orbit: 240,
-    speed: 35,
   },
   {
     id: 3,
@@ -33,8 +29,6 @@ const projects = [
     icon: <Languages className="text-purple-400" size={24} />,
     color: "bg-purple-500/10 border-purple-400/40 shadow-purple-500/20",
     link: "https://ai-translator-v4.vercel.app/",
-    orbit: 240,
-    speed: 35,
   },
   {
     id: 4,
@@ -43,8 +37,6 @@ const projects = [
     icon: <Mail className="text-orange-400" size={24} />,
     color: "bg-orange-500/10 border-orange-400/40 shadow-orange-500/20",
     link: "https://ai-email-rewriter-five.vercel.app/",
-    orbit: 240,
-    speed: 35,
   },
   {
     id: 5,
@@ -53,8 +45,14 @@ const projects = [
     icon: <Utensils className="text-yellow-400" size={24} />,
     color: "bg-yellow-500/10 border-yellow-400/40 shadow-yellow-500/20",
     link: "https://ai-recipe-generator-v1.vercel.app/",
-    orbit: 240,
-    speed: 35,
+  },
+  {
+    id: 6,
+    title: "Plan It",
+    description: "Content scheduling & management.",
+    icon: <Calendar className="text-pink-400" size={24} />,
+    color: "bg-pink-500/10 border-pink-400/40 shadow-pink-500/20",
+    link: "https://plan-it-v1.vercel.app/",
   },
 ];
 
@@ -64,6 +62,9 @@ export function Projects() {
   const [isMobile, setIsMobile] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const containerRef = useRef<HTMLDivElement>(null);
+  
+  // Single orbit radius
+  const ORBIT_RADIUS = 280;
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 1024);
@@ -132,25 +133,36 @@ export function Projects() {
 
       {!isMobile ? (
         <div 
-          className="relative h-[700px] w-[700px] flex items-center justify-center"
+          className="relative h-[800px] w-[800px] flex items-center justify-center"
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => {
             setIsPaused(false);
             setActiveProject(null);
           }}
         >
-          {/* 2. Enhanced Orbits */}
-          <div className={cn(
-            "absolute inset-0 rounded-full border border-white/5 transition-opacity duration-700",
-            isPaused ? "opacity-100" : "opacity-40"
-          )} />
-          <div className="absolute inset-[100px] rounded-full border border-white/5" />
+          {/* 2. Main Orbit Ring */}
+          <div
+            className={cn(
+              "absolute rounded-full border border-white/5 transition-opacity duration-700 pointer-events-none",
+              isPaused ? "opacity-100" : "opacity-30"
+            )}
+            style={{
+              width: ORBIT_RADIUS * 2,
+              height: ORBIT_RADIUS * 2,
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+            }}
+          />
+          
+          {/* Inner Decorative Ring */}
+          <div className="absolute inset-[30%] rounded-full border border-white/5 opacity-20" />
           
           {/* Energy Rings */}
           <motion.div 
             animate={{ rotate: 360 }}
-            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-            className="absolute inset-0 rounded-full border-[1px] border-dashed border-white/10 opacity-20" 
+            transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
+            className="absolute inset-[10%] rounded-full border-[1px] border-dashed border-white/5 opacity-10 pointer-events-none" 
           />
 
           {/* 3. Central Core (The Sun) */}
@@ -181,7 +193,7 @@ export function Projects() {
                   key={project.id}
                   className="absolute top-1/2 left-1/2 -ml-10 -mt-10"
                   style={{
-                    transform: `rotate(${angle}deg) translate(${project.orbit}px) rotate(-${angle}deg)`,
+                    transform: `rotate(${angle}deg) translate(${ORBIT_RADIUS}px) rotate(-${angle}deg)`,
                   }}
                 >
                   <motion.div

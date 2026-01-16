@@ -366,9 +366,9 @@ function SkillsComponent() {
         className="max-w-5xl mx-auto"
       >
         <motion.div variants={variants.fadeInUp} className="space-y-4 text-center mb-12">
-          <h2 className="text-3xl font-bold sm:text-4xl">Neural Network</h2>
-          <p className="text-secondary max-w-2xl mx-auto">
-            An interconnected system of technologies. Hover to explore relationships.
+          <h2 className="text-4xl md:text-6xl font-black font-mono tracking-tighter uppercase">Skill_Matrix</h2>
+          <p className="font-mono text-xs text-zinc-500 tracking-widest uppercase">
+            // Visualization_Mode: Active
           </p>
         </motion.div>
 
