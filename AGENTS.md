@@ -1,14 +1,11 @@
-# PROJECT KNOWLEDGE BASE
+# AGENTS.md - Portfolio Project
 
-**Generated:** 2026-01-18T12:34:45Z
-**Commit:** b65b68a
-**Branch:** main
+## Overview
+This document provides guidance for agentic coding tasks in this Next.js 16 portfolio project. It covers build, lint, test workflows, code style conventions, and project-specific patterns.
 
-## OVERVIEW
+## PROJECT STRUCTURE
 
 Portfolio project containing a Next.js 16 portfolio website. All active development is in the `gemini/` subdirectory.
-
-## STRUCTURE
 
 ```
 ./
