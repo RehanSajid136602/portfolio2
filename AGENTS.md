@@ -3,37 +3,104 @@
 ## Overview
 This document provides guidance for agentic coding tasks in this Next.js 16 portfolio project. It covers build, lint, test workflows, code style conventions, and project-specific patterns.
 
-## PROJECT STRUCTURE
+## Build, Lint, Test
 
-Portfolio project containing a Next.js 16 portfolio website. All active development is in the `gemini/` subdirectory.
+### Build Commands
+- Development: `npm run dev` (uses Next.js turbo mode)
+- Production build: `npm run build`
+- Start production server: `npm start`
+- Bundle analysis: `npm run analyze`
 
-```
-./
-├── gemini/                    # Main Next.js portfolio project
-└── README.md
-```
+### Lint Commands
+- Run ESLint: `npm run lint`
+- Project uses `eslint-config-next` with TypeScript support
+- Configuration file: `eslint.config.mjs`
 
-## WHERE TO LOOK
+### Test Commands
+- No test framework configured yet. When adding tests:
+  - Use Jest or Vitest for unit tests
+  - Run tests with: `npm test`
+  - Run single test: `npm test -- --testNamePattern="test name"`
 
-| Task | Location | Notes |
-|------|----------|-------|
-| **Portfolio source** | `./gemini/src/` | Next.js App Router |
-| **Documentation** | `./gemini/AGENTS.md` | Comprehensive conventions |
-| **Project context** | `./gemini/GEMINI.md` | Tech stack, features |
-| **Config** | `./gemini/` root | `package.json`, `tsconfig.json`, `next.config.ts` |
+### Type Checking
+- Strict TypeScript mode enabled in `tsconfig.json`
+- Run type check via build: `npm run build` (includes type checking)
+- Path alias: `@/*` maps to `./src/*`
 
-## COMMANDS
+## Code Style Guidelines
 
-```bash
-cd gemini
-npm run dev        # Development server (http://localhost:3000)
-npm run build      # Production build
-npm run lint       # Run ESLint
-npm run analyze    # Bundle analysis
-```
+### Imports and Modules
+- Use explicit named imports: `import { Foo, Bar } from 'module'`
+- No wildcard imports
+- Client components must have `"use client"` at the very top
+- Import order: React hooks → external libraries → internal components/utils
 
-## NOTES
+### Formatting
+- Uses ESLint + Next.js conventions
+- Line length: ~100 characters recommended
+- Use trailing commas in multi-line objects/arrays
+- Use TypeScript strict mode - avoid `any`, prefer `unknown` if needed
+- Always type function parameters and return values
 
-- Project uses strict TypeScript, React 19, Tailwind CSS v4
-- All component conventions, code style, and patterns documented in `./gemini/AGENTS.md`
-- DO NOT create additional AGENTS.md files in subdirectories—parent file is comprehensive
+### Naming Conventions
+- Components: PascalCase (e.g., `Hero`, `RocketButton`)
+- Functions/variables: camelCase
+- Constants: UPPER_SNAKE_CASE for config values, camelCase for animation variants
+- Types/interfaces: PascalCase with `Props` suffix for component props
+- Boolean variables: `is*`, `has*`, `should*` prefix
+
+### Error Handling
+- Wrap async operations in try/catch
+- Log errors with context: `console.error("Failed to copy:", err)`
+- Handle clipboard and API errors gracefully with user feedback
+- Reset state to idle on error (see `RocketButton.tsx:58`)
+
+### Component Patterns
+- Memoize components with `React.memo()` for performance
+- Use `framer-motion` for animations with variants for complex sequences
+- Extract animation variants to module-level constants (see `Hero.tsx:8-15`)
+- Use Tailwind utility classes for styling
+- Extract complex JSX patterns into separate components when reused
+- Use `clsx` and `tailwind-merge` for conditional class handling
+
+### File Organization
+- Components: `src/components/[category]/[Name].tsx`
+- Categories: `ui/`, `sections/`, `effects/`
+- Lib utilities: `src/lib/`
+- App routes: `src/app/`
+
+### Accessibility
+- Use semantic HTML elements
+- Ensure interactive elements have proper states
+- No ARIA attributes currently - add when needed
+
+## Cursor Rules
+No `.cursor/rules/` or `.cursorrules` files present.
+
+## Copilot Rules
+No `.github/copilot-instructions.md` file present.
+
+## Quality Gates
+- All changes must pass `npm run lint` before committing
+- Production builds (`npm run build`) must succeed
+- Avoid large rewrites without prior discussion
+- Use descriptive commit messages
+
+## Quick Start for Agents
+1. Run `npm run dev` to start the development server
+2. Use `npm run lint` to check code quality
+3. The project uses React 19 with Next.js 16 App Router
+4. All components are TypeScript with strict mode
+5. Tailwind CSS v4 with PostCSS for styling
+
+## Technology Stack
+- Next.js 16.1.1 with App Router
+- React 19.2.3
+- TypeScript 5
+- Tailwind CSS 4
+- Framer Motion 12
+- ESLint 9
+- Lucide React icons
+
+## Contact
+For questions, review `GEMINI.md` for project-specific context and decisions.

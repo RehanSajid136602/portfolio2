@@ -1,0 +1,108 @@
+"use client";
+
+import { m } from "framer-motion";
+import { Github, Linkedin, Twitter, Terminal } from "lucide-react";
+import { RocketButton } from "@/components/ui/RocketButton";
+
+const stagger = {
+  animate: { transition: { staggerChildren: 0.1 } },
+};
+
+const fadeUp = {
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+};
+
+import { ScrollSection } from "@/components/ui/ScrollSection";
+
+// ... imports
+
+export function Contact() {
+  const email = "sajidnadeem2020@gmail.com";
+
+  return (
+    <ScrollSection id="contact" className="w-full relative py-section-y px-section-x bg-black border-t border-zinc-900 overflow-hidden">
+      {/* Background Grid */}
+      <div
+        className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none"
+        style={{
+          backgroundImage: 'linear-gradient(to right, #333 1px, transparent 1px), linear-gradient(to bottom, #333 1px, transparent 1px)',
+          backgroundSize: '4rem 4rem',
+        }}
+      />
+
+      <m.div
+        initial="initial"
+        whileInView="animate"
+        viewport={{ once: true }}
+        variants={stagger}
+        className="relative z-10 flex flex-col items-center justify-center max-w-4xl mx-auto text-center"
+      >
+        <m.div variants={fadeUp} className="mb-8">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-zinc-900 border border-zinc-800 rounded-sm mb-6">
+              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+              <span className="font-sans text-xs text-green-500">Available for work</span>
+            </div>
+           
+            <h2 className="text-5xl md:text-8xl font-black font-sans tracking-tight text-white mb-6">
+              Get In<br/><span className="text-zinc-800 text-stroke">Touch</span>
+            </h2>
+        </m.div>
+
+        <m.p variants={fadeUp} className="font-sans text-sm md:text-base text-zinc-500 max-w-lg mb-12 leading-relaxed">
+          I&apos;m always interested in new opportunities and collaborations. Let&apos;s discuss how we can work together.
+        </m.p>
+
+        <m.div variants={fadeUp} className="flex flex-col items-center gap-12 w-full">
+          <div className="flex flex-col md:flex-row items-center gap-8">
+            <div className="p-1 border border-dashed border-zinc-700">
+               <RocketButton email={email} />
+            </div>
+            
+             <m.a
+               href="https://github.com/RehanSajid136602"
+               target="_blank"
+               whileHover={{ scale: 1.05 }}
+               whileTap={{ scale: 0.95 }}
+               className="px-8 py-4 bg-zinc-900 border border-zinc-800 text-white font-sans text-sm hover:bg-white hover:text-black transition-all"
+             >
+               View GitHub Profile
+             </m.a>
+          </div>
+
+          <div className="flex gap-4 mt-8">
+            {[
+              { icon: <Github size={20} />, href: "https://github.com/RehanSajid136602", label: "GitHub" },
+              { icon: <Linkedin size={20} />, href: "#", label: "LinkedIn" },
+              { icon: <Twitter size={20} />, href: "#", label: "Twitter" },
+            ].map((social, i) => (
+              <m.a
+                key={i}
+                href={social.href}
+                whileHover={{ y: -4, backgroundColor: "#fff", color: "#000" }}
+                className="group flex flex-col items-center gap-2"
+              >
+                <div className="flex h-14 w-14 items-center justify-center border border-zinc-800 bg-black text-zinc-400 transition-colors group-hover:border-white">
+                  {social.icon}
+                </div>
+                <span className="text-sm font-sans text-zinc-600 group-hover:text-white transition-colors">
+                  {social.label}
+                </span>
+              </m.a>
+            ))}
+          </div>
+        </m.div>
+
+        <m.footer variants={fadeUp} className="w-full mt-32 pt-8 border-t border-zinc-900 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] font-mono text-zinc-600 uppercase tracking-widest">
+          <div className="flex items-center gap-2">
+            <Terminal size={12} />
+            <span>Built by Muhammad Rehan</span>
+          </div>
+          <div>
+            <span>© 2026</span>
+          </div>
+        </m.footer>
+      </m.div>
+    </ScrollSection>
+  );
+}
