@@ -2,7 +2,6 @@ import type { NextConfig } from "next";
 import withBundleAnalyzer from "@next/bundle-analyzer";
 
 const nextConfig: NextConfig = {
-  reactCompiler: true,
   compiler: {
     removeConsole: process.env.NODE_ENV === "production" ? {
       exclude: ["error", "warn"],
@@ -13,9 +12,6 @@ const nextConfig: NextConfig = {
   },
   poweredByHeader: false,
   compress: true,
-  turbopack: {
-    root: process.cwd(),
-  },
 };
 
 const withAnalyzer = withBundleAnalyzer({

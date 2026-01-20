@@ -1,7 +1,4 @@
 {
-  "buildCommand": "cd gemini && npm run build",
-  "outputDirectory": "gemini/.next",
-  "installCommand": "cd gemini && npm install",
   "framework": "nextjs",
   "rootDirectory": "gemini"
 }
